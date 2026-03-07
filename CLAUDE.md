@@ -85,6 +85,10 @@ Supabase (auth + db + RLS), Stripe (subscriptions), Resend (email), next-intl.
 - Secondary: English (en.json) — mirror all keys
 - Never hardcode display strings in components
 
+## Git Conventions
+- Branch naming: `feature/issue-{number}` (e.g. `feature/issue-42`)
+- Always create the branch from `main`
+
 ## Test Before Done
 - npm run build       (must pass with zero errors)
 - npm run typecheck   (must pass with zero errors)
