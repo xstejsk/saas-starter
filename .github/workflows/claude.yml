@@ -36,6 +36,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          claude_args: '--allowedTools "Bash(npm install),Bash(npm run build),Bash(npm run typecheck),Bash(npm run lint)"'
 
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
