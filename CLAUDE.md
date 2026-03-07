@@ -91,11 +91,11 @@ Note: In Next.js 15+, cookies(), headers(), params, and searchParams are all asy
 - Always create the branch from `main`
 
 ## Workflow: Implementing an Issue
-After implementing changes and verifying they pass all checks:
-1. Run `npm run typecheck`, `npm run lint`, and `npm run build` — all must pass
-2. Commit the changes
-3. Push the branch
-4. Create a PR with `gh pr create` linking to the issue (use `Closes #N` in the body)
+1. Run `npm install` if you added or changed dependencies
+2. Run `npm run typecheck`, `npm run lint`, and `npm run build` — all must pass
+3. Commit ALL changed files including `package-lock.json` if it was modified
+4. Push the branch
+5. Create a PR with `gh pr create` linking to the issue (use `Closes #N` in the body)
 
 ## Test Before Done
 - npm run build       (must pass with zero errors)
