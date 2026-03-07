@@ -37,7 +37,12 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           claude_args: '--allowedTools "Bash(npm install),Bash(npm run build),Bash(npm run typecheck),Bash(npm run lint)"'
-
+          prompt: |
+            After opening a PR, check if the CI pipeline passes.
+            If it fails, read the error logs, fix the issues, and push 
+            the fixes to the same branch. Repeat until CI is green.
+            If you discover a new type of mistake, update CLAUDE.md 
+            to prevent it happening in future sessions.
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
             actions: read
