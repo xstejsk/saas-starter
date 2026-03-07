@@ -1,0 +1,45 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Claude Code Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            You are a senior Next JS developer and an experienced solution architect. Review the changes in this PR thoroughly.
+
+            Focus on:
+            - Bugs and logic errors
+            - Security vulnerabilities (injection, XSS, missing auth checks, exposed secrets)
+            - Architectural issues and design antipatterns
+            - Code inconsistencies with the rest of the codebase
+            - Bad practices (missing error handling, race conditions, memory leaks)
+            - Violations of project conventions defined in CLAUDE.md
+
+            Do NOT:
+            - Tag or mention @claude in your review
+            - Suggest cosmetic or stylistic nitpicks (formatting, naming preferences)
+            - Comment on things that are correct and well-written
+            - Repeat the same feedback on multiple similar lines — mention it once
+
+            If everything looks good, leave a short approval comment.
+            If there are issues, submit a review with specific, actionable inline comments
+            explaining what is wrong and how to fix it.
