@@ -36,5 +36,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch_prefix: "feature/"
+          branch_name_template: "{{prefix}}issue-{{entityNumber}}"
           additional_permissions: |
             actions: read

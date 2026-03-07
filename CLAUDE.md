@@ -90,6 +90,13 @@ Note: In Next.js 15+, cookies(), headers(), params, and searchParams are all asy
 - Branch naming: `feature/issue-{number}` (e.g. `feature/issue-42`)
 - Always create the branch from `main`
 
+## Workflow: Implementing an Issue
+After implementing changes and verifying they pass all checks:
+1. Run `npm run typecheck`, `npm run lint`, and `npm run build` — all must pass
+2. Commit the changes
+3. Push the branch
+4. Create a PR with `gh pr create` linking to the issue (use `Closes #N` in the body)
+
 ## Test Before Done
 - npm run build       (must pass with zero errors)
 - npm run typecheck   (must pass with zero errors)
