@@ -46,3 +46,12 @@ jobs:
           branch_name_template: "{{prefix}}issue-{{entityNumber}}"
           additional_permissions: |
             actions: read
+          prompt: |
+            MANDATORY before pushing or creating a PR:
+            1. Run `npm install` if any dependencies were added or changed
+            2. Run `npm run typecheck` — must pass with zero errors
+            3. Run `npm run lint` — must pass with zero warnings
+            4. Run `npm run build` — must pass with zero errors
+            5. If ANY of the above fail, fix the issues and re-run until all pass
+            6. Commit ALL changed files including package-lock.json
+            7. Do NOT create a PR until all checks pass locally
