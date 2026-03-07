@@ -30,8 +30,9 @@ until you receive answers. Do not ask one question, wait, then ask another.
 
 ## Project
 A reusable Next.js SaaS starter. Generic — no domain-specific logic.
-Stack: Next.js 14 App Router, TypeScript strict, Tailwind, shadcn/ui,
+Stack: Next.js 16 App Router, TypeScript strict, Tailwind v4, shadcn/ui,
 Supabase (auth + db + RLS), Stripe (subscriptions), Resend (email), next-intl.
+Note: params and searchParams are async Promises — always await them in pages/layouts.
 
 ## Environments
 - Local / Preview: Supabase saas-starter-dev + Stripe test mode
