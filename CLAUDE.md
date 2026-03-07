@@ -92,10 +92,16 @@ Note: In Next.js 15+, cookies(), headers(), params, and searchParams are all asy
 
 ## Workflow: Implementing an Issue
 1. Run `npm install` if you added or changed dependencies
-2. Run `npm run typecheck`, `npm run lint`, and `npm run build` — all must pass
+2. **MANDATORY before any commit:** Run all three checks and confirm each passes:
+   - `npm run typecheck` — must exit with zero errors
+   - `npm run lint`      — must exit with zero warnings
+   - `npm run build`     — must exit with zero errors
 3. Commit ALL changed files including `package-lock.json` if it was modified
 4. Push the branch
 5. Create a PR with `gh pr create` linking to the issue (use `Closes #N` in the body)
+
+> **IMPORTANT:** Never skip step 2. A task is NOT done until all three commands pass locally.
+> Skipping these checks will cause CI to fail and block the PR.
 
 ## Test Before Done
 - npm run build       (must pass with zero errors)
