@@ -10,7 +10,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-      issues: read
+      issues: write
       id-token: write
     steps:
       - name: Checkout repository
@@ -24,7 +24,13 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
-            You are a senior Next JS developer and an experienced solution architect. Review the changes in this PR thoroughly.
+            You are a senior Next JS developer and an experienced solution architect.
+            Review PR #${{ github.event.pull_request.number }} in ${{ github.repository }}.
+
+            Steps:
+            1. Get the PR diff: gh pr diff ${{ github.event.pull_request.number }}
+            2. Read the changed files to understand context
+            3. Submit your review using gh CLI
 
             Focus on:
             - Bugs and logic errors
@@ -40,6 +46,7 @@ jobs:
             - Comment on things that are correct and well-written
             - Repeat the same feedback on multiple similar lines — mention it once
 
-            If everything looks good, leave a short approval comment.
-            If there are issues, submit a review with specific, actionable inline comments
-            explaining what is wrong and how to fix it.
+            Submit the review using:
+              gh pr review ${{ github.event.pull_request.number }} --comment --body "your review"
+            Or if everything looks good:
+              gh pr review ${{ github.event.pull_request.number }} --approve --body "your approval message"
