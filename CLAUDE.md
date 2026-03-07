@@ -1,3 +1,31 @@
+## Behavior Rules
+
+### Before Implementing
+Before writing any code, Claude must:
+1. Re-read the issue acceptance criteria carefully
+2. If ANY of the following are unclear, post a comment asking for clarification and STOP:
+    - Which files to create or modify
+    - What the expected input/output of a function is
+    - Whether a DB migration is needed
+    - Which components to use
+    - Anything not explicitly covered in the acceptance criteria
+3. Only proceed with implementation when the issue is unambiguous
+
+### When to Ask vs When to Proceed
+**Proceed without asking if:**
+- All acceptance criteria are specific and testable
+- File locations are mentioned
+- DB changes are explicitly described
+
+**Ask before proceeding if:**
+- Acceptance criteria use vague language ("make it better", "improve X")
+- The issue references files that don't exist yet without describing them
+- There are two reasonable ways to implement something and neither is specified
+
+### How to Ask
+Post a single comment listing ALL questions at once. Do not implement anything
+until you receive answers. Do not ask one question, wait, then ask another.
+
 # saas-starter — Claude Code Instructions
 
 ## Project
