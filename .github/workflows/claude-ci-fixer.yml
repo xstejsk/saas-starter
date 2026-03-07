@@ -1,0 +1,37 @@
+name: Claude CI Fixer
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+jobs:
+  fix:
+    if: github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 1
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          claude_args: '--allowedTools "Bash(npm install),Bash(npm run build),Bash(npm run typecheck),Bash(npm run lint)"'
+          prompt: |
+            The CI pipeline just failed on branch ${{ github.event.workflow_run.head_branch }}.
+            
+            Read the CI failure logs from the workflow run, identify what failed,
+            fix the issues, and push the fixes to the same branch.
+            
+            If this reveals a recurring mistake that could happen again in future,
+            update CLAUDE.md with a note to prevent it.
