@@ -1,5 +1,41 @@
 {
   "common": {
     "loading": "Načítání..."
+  },
+  "auth": {
+    "loginTitle": "Přihlášení",
+    "loginDescription": "Přihlaste se ke svému účtu",
+    "loginButton": "Přihlásit se",
+    "loggingIn": "Přihlašování...",
+    "loginError": "Neplatný e-mail nebo heslo",
+    "signupTitle": "Vytvořit účet",
+    "signupDescription": "Zadejte své údaje pro vytvoření účtu",
+    "signupButton": "Vytvořit účet",
+    "signingUp": "Vytváření účtu...",
+    "signupError": "Nepodařilo se vytvořit účet",
+    "resetPasswordTitle": "Obnovení hesla",
+    "resetPasswordDescription": "Zadejte svůj e-mail a my vám pošleme odkaz pro obnovení hesla",
+    "resetPasswordButton": "Odeslat odkaz",
+    "sendingResetLink": "Odesílání...",
+    "resetPasswordError": "Nepodařilo se odeslat odkaz pro obnovení hesla",
+    "resetPasswordEmailSent": "Zkontrolujte svůj e-mail pro odkaz na obnovení hesla",
+    "checkEmailTitle": "Zkontrolujte svůj e-mail",
+    "checkEmailDescription": "Poslali jsme vám potvrzovací odkaz. Zkontrolujte svou e-mailovou schránku.",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "vas@email.cz",
+    "passwordLabel": "Heslo",
+    "forgotPassword": "Zapomenuté heslo?",
+    "noAccount": "Nemáte účet?",
+    "signupLink": "Vytvořit účet",
+    "hasAccount": "Již máte účet?",
+    "loginLink": "Přihlásit se",
+    "backToLogin": "Zpět na přihlášení",
+    "continueWithGoogle": "Pokračovat přes Google",
+    "orContinueWith": "nebo"
+  },
+  "validation": {
+    "emailInvalid": "Zadejte platný e-mail",
+    "passwordRequired": "Heslo je povinné",
+    "passwordMinLength": "Heslo musí mít alespoň 8 znaků"
   }
 }
