@@ -31,11 +31,21 @@
     "loginLink": "Log in",
     "backToLogin": "Back to login",
     "continueWithGoogle": "Continue with Google",
-    "orContinueWith": "or"
+    "orContinueWith": "or",
+    "updatePasswordTitle": "New password",
+    "updatePasswordDescription": "Enter your new password",
+    "newPasswordLabel": "New password",
+    "confirmPasswordLabel": "Confirm password",
+    "updatePasswordButton": "Set password",
+    "updatingPassword": "Setting password...",
+    "updatePasswordError": "Could not update password",
+    "updatePasswordSuccessTitle": "Password updated",
+    "updatePasswordSuccessDescription": "Your password has been updated. You will be redirected."
   },
   "validation": {
     "emailInvalid": "Please enter a valid email",
     "passwordRequired": "Password is required",
-    "passwordMinLength": "Password must be at least 8 characters"
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordsMustMatch": "Passwords do not match"
   }
 }

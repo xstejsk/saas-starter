@@ -31,11 +31,21 @@
     "loginLink": "Přihlásit se",
     "backToLogin": "Zpět na přihlášení",
     "continueWithGoogle": "Pokračovat přes Google",
-    "orContinueWith": "nebo"
+    "orContinueWith": "nebo",
+    "updatePasswordTitle": "Nové heslo",
+    "updatePasswordDescription": "Zadejte své nové heslo",
+    "newPasswordLabel": "Nové heslo",
+    "confirmPasswordLabel": "Potvrďte heslo",
+    "updatePasswordButton": "Nastavit heslo",
+    "updatingPassword": "Nastavování hesla...",
+    "updatePasswordError": "Nepodařilo se změnit heslo",
+    "updatePasswordSuccessTitle": "Heslo změněno",
+    "updatePasswordSuccessDescription": "Vaše heslo bylo úspěšně změněno. Budete přesměrováni."
   },
   "validation": {
     "emailInvalid": "Zadejte platný e-mail",
     "passwordRequired": "Heslo je povinné",
-    "passwordMinLength": "Heslo musí mít alespoň 8 znaků"
+    "passwordMinLength": "Heslo musí mít alespoň 8 znaků",
+    "passwordsMustMatch": "Hesla se neshodují"
   }
 }
