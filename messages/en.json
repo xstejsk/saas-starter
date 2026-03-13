@@ -1,5 +1,51 @@
 {
   "common": {
     "loading": "Loading..."
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "loginDescription": "Log in to your account",
+    "loginButton": "Log in",
+    "loggingIn": "Logging in...",
+    "loginError": "Invalid email or password",
+    "signupTitle": "Create an account",
+    "signupDescription": "Enter your details to create an account",
+    "signupButton": "Create account",
+    "signingUp": "Creating account...",
+    "signupError": "Could not create account",
+    "resetPasswordTitle": "Reset password",
+    "resetPasswordDescription": "Enter your email and we'll send you a link to reset your password",
+    "resetPasswordButton": "Send reset link",
+    "sendingResetLink": "Sending...",
+    "resetPasswordError": "Could not send reset link",
+    "resetPasswordEmailSent": "Check your email for a password reset link",
+    "checkEmailTitle": "Check your email",
+    "checkEmailDescription": "We've sent you a confirmation link. Check your inbox.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "signupLink": "Sign up",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "backToLogin": "Back to login",
+    "continueWithGoogle": "Continue with Google",
+    "orContinueWith": "or",
+    "updatePasswordTitle": "New password",
+    "updatePasswordDescription": "Enter your new password",
+    "newPasswordLabel": "New password",
+    "confirmPasswordLabel": "Confirm password",
+    "updatePasswordButton": "Set password",
+    "updatingPassword": "Setting password...",
+    "updatePasswordError": "Could not update password",
+    "updatePasswordSuccessTitle": "Password updated",
+    "updatePasswordSuccessDescription": "Your password has been updated. You will be redirected."
+  },
+  "validation": {
+    "emailInvalid": "Please enter a valid email",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordsMustMatch": "Passwords do not match"
   }
 }
