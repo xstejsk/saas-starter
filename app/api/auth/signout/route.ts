@@ -5,7 +5,7 @@ import type { Database } from '@/types'
 
 export async function POST(request: Request) {
   const cookieStore = await cookies()
-  const redirectResponse = NextResponse.redirect(new URL('/login', request.url))
+  const redirectResponse = NextResponse.redirect(new URL('/login', request.url), 303)
 
   // Create Supabase client that writes cookies directly onto the redirect response.
   // Using the shared createClient() helper won't work here because it writes to
