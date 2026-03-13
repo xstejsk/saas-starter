@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 ## Behavior Rules
 
 ### Before Implementing
@@ -26,37 +30,63 @@ Before writing any code, Claude must:
 Post a single comment listing ALL questions at once. Do not implement anything
 until you receive answers. Do not ask one question, wait, then ask another.
 
-# saas-starter — Claude Code Instructions
-
 ## Project
+
 A reusable Next.js SaaS starter. Generic — no domain-specific logic.
 Stack: Next.js 16 App Router, TypeScript strict, Tailwind v4, shadcn/ui,
 Supabase (auth + db + RLS), Stripe (subscriptions), Resend (email), next-intl.
-Note: In Next.js 15+, cookies(), headers(), params, and searchParams are all async — always await them.
+
+**Next.js 15+ async APIs:** `cookies()`, `headers()`, `params`, and `searchParams` are all async — always `await` them.
+
+**Path alias:** `@/*` maps to project root (configured in tsconfig.json).
+
+## Commands
+
+```bash
+npm run dev         # Start dev server (http://localhost:3000)
+npm run build       # Production build — must pass before any PR
+npm run typecheck   # tsc --noEmit — must pass before any PR
+npm run lint        # ESLint — must pass with zero warnings before any PR
+npm run format      # Prettier — format all files
+```
+
+Pre-commit hooks (husky + lint-staged) auto-run ESLint fix + Prettier on staged `.ts`/`.tsx` files.
 
 ## Environments
+
 - Local / Preview: Supabase saas-starter-dev + Stripe test mode
 - Production: Supabase saas-starter-prod + Stripe live mode
 - Vercel handles env var switching automatically per branch
 
-## Route Groups
-- (auth)/        → login, signup, callback, reset-password
-- (dashboard)/   → protected routes requiring active session
-- (marketing)/   → public pages: landing, pricing
+## Architecture
 
-## Folder Structure
-- /app           Next.js App Router pages and layouts
-- /components/ui shadcn components (never manually edit these)
-- /components/shared  custom reusable components
-- /lib/supabase  server.ts, client.ts, middleware.ts
-- /lib/stripe    client.ts, helpers.ts
-- /lib/resend    client.ts, templates/
-- /actions       Server Actions using next-safe-action + Zod
-- /types         Shared TypeScript types (index.ts)
-- /messages      cs.json, en.json (next-intl translations)
-- /supabase/migrations  All DB migrations (NEVER skip this)
+### Route Groups
+- `(auth)/`        → login, signup, callback, reset-password
+- `(dashboard)/`   → protected routes requiring active session
+- `(marketing)/`   → public pages: landing, pricing
+
+### Folder Structure
+- `/app`           — Next.js App Router pages and layouts
+- `/components/ui` — shadcn components (never manually edit these)
+- `/components/shared` — custom reusable components
+- `/lib/supabase`  — server.ts (async, uses cookies), client.ts (browser client), middleware.ts
+- `/lib/stripe`    — client.ts, helpers.ts
+- `/lib/resend`    — client.ts, templates/
+- `/actions`       — Server Actions using next-safe-action + Zod
+- `/types`         — Shared TypeScript types (index.ts — includes Supabase `Database` type)
+- `/messages`      — cs.json, en.json (next-intl translations)
+- `/supabase/migrations` — All DB migrations (NEVER skip this)
+
+### Supabase Client Pattern
+- **Server Components / Server Actions:** `import { createClient } from '@/lib/supabase/server'` — async, cookie-based
+- **Client Components:** `import { createClient } from '@/lib/supabase/client'` — browser client, no cookies
+- **Middleware** (`middleware.ts`): Inline Supabase client that refreshes auth session on every request. Do not add logic between `createServerClient` and `supabase.auth.getUser()`.
+
+### CI
+GitHub Actions (`.github/workflows/ci.yml`) runs typecheck → lint → build on every PR to `main`.
 
 ## Critical Rules
+
 1. ALWAYS create a migration file for any DB change
 2. ALWAYS add RLS policies when creating a new table
 3. Every table: id (uuid), created_at (timestamptz), user_id (uuid FK auth.users)
@@ -69,35 +99,41 @@ Note: In Next.js 15+, cookies(), headers(), params, and searchParams are all asy
 10. Run `npm run build` and `npm run typecheck` before marking any task done
 
 ## Database Conventions
+
 - Table names: snake_case plural (e.g. user_profiles, subscriptions)
 - Always enable RLS on every table
-- RLS pattern: auth.uid() = user_id for SELECT/INSERT/UPDATE/DELETE
-- Use Supabase migration files: supabase/migrations/YYYYMMDDHHMMSS_description.sql
+- RLS pattern: `auth.uid() = user_id` for SELECT/INSERT/UPDATE/DELETE
+- Migration files: `supabase/migrations/YYYYMMDDHHMMSS_description.sql`
 
 ## Stripe Conventions
-- Webhook handler lives at: app/api/webhooks/stripe/route.ts
+
+- Webhook handler lives at: `app/api/webhooks/stripe/route.ts`
 - Always verify webhook signature before processing
 - Store Stripe customer_id and subscription status in DB (subscriptions table)
 - Never trust client-side subscription status — always check DB
 
 ## i18n Conventions
+
 - Use next-intl for all user-facing strings
 - Primary language: Czech (cs.json) — always add Czech strings
 - Secondary: English (en.json) — mirror all keys
 - Never hardcode display strings in components
 
 ## Git Conventions
+
 - Branch naming: `feature/issue-{number}` (e.g. `feature/issue-42`)
 - Always create the branch from `main`
 
 ## Workflow: Implementing an Issue
+
 1. Run `npm install` if you added or changed dependencies
-2. Run `npm run typecheck`, `npm run lint`, and `npm run build` — all must pass
+2. **MANDATORY before any commit:** Run all three checks and confirm each passes:
+   - `npm run typecheck` — must exit with zero errors
+   - `npm run lint`      — must exit with zero warnings
+   - `npm run build`     — must exit with zero errors
 3. Commit ALL changed files including `package-lock.json` if it was modified
 4. Push the branch
 5. Create a PR with `gh pr create` linking to the issue (use `Closes #N` in the body)
 
-## Test Before Done
-- npm run build       (must pass with zero errors)
-- npm run typecheck   (must pass with zero errors)
-- npm run lint        (must pass with zero warnings)
+> **IMPORTANT:** Never skip step 2. A task is NOT done until all three commands pass locally.
+> Skipping these checks will cause CI to fail and block the PR.
