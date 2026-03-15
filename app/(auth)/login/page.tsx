@@ -6,7 +6,7 @@ import { z } from 'zod/v4'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -32,7 +32,12 @@ export default function LoginPage() {
   const t = useTranslations('auth')
   const tValidation = useTranslations('validation')
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
+
+  const nextParam = searchParams.get('next')
+  const safeNext =
+    nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : '/dashboard'
 
   const {
     register,
@@ -55,7 +60,7 @@ export default function LoginPage() {
       return
     }
 
-    router.push('/dashboard')
+    router.push(safeNext)
   }
 
   async function handleGoogleLogin() {
@@ -64,7 +69,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/callback`,
+        redirectTo: `${window.location.origin}/callback?next=${encodeURIComponent(safeNext)}`,
       },
     })
 
