@@ -3,30 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
-import {
-  Home01Icon,
-  Settings01Icon,
-  CreditCardIcon,
-  Logout01Icon,
-  Menu01Icon,
-} from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { Logout01Icon, Menu01Icon } from '@hugeicons/core-free-icons'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { useState } from 'react'
-
-interface NavItem {
-  href: string
-  labelKey: 'dashboard' | 'settings' | 'billing'
-  icon: IconSvgElement
-}
-
-const navItems: NavItem[] = [
-  { href: '/dashboard', labelKey: 'dashboard', icon: Home01Icon },
-  { href: '/dashboard/settings', labelKey: 'settings', icon: Settings01Icon },
-  { href: '/dashboard/billing', labelKey: 'billing', icon: CreditCardIcon },
-]
+import { dashboardNavItems } from '@/config/dashboard-nav'
 
 function NavLinks({
   pathname,
@@ -39,7 +22,7 @@ function NavLinks({
 }) {
   return (
     <nav className="flex flex-col gap-1">
-      {navItems.map((item) => {
+      {dashboardNavItems.map((item) => {
         const isActive = pathname === item.href
         return (
           <Button
