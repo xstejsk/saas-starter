@@ -31,11 +31,42 @@ export async function middleware(request: NextRequest) {
 
   // IMPORTANT: Do not add logic between createServerClient and supabase.auth.getUser().
   // A simple mistake could make it hard to debug users being randomly logged out.
-  await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  // IMPORTANT: Return supabaseResponse as-is. If creating a new response, ensure you:
-  // 1. Pass in the request: NextResponse.next({ request })
-  // 2. Copy over the cookies: newResponse.cookies.setAll(supabaseResponse.cookies.getAll())
+  const { pathname } = request.nextUrl
+
+  // Routes from (dashboard) group — require active session
+  const protectedRoutes = ['/dashboard']
+  // Routes from (auth) group — redirect away if already authenticated
+  const authRoutes = ['/login', '/signup']
+
+  const isProtected = protectedRoutes.some((r) => pathname === r || pathname.startsWith(r + '/'))
+  const isAuthRoute = authRoutes.some((r) => pathname === r)
+
+  if (isProtected && !user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    url.searchParams.set('next', pathname)
+    const redirectResponse = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value)
+    })
+    return redirectResponse
+  }
+
+  if (isAuthRoute && user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    url.search = ''
+    const redirectResponse = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value)
+    })
+    return redirectResponse
+  }
+
   return supabaseResponse
 }
 

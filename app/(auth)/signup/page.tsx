@@ -6,6 +6,7 @@ import { z } from 'zod/v4'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -30,8 +31,13 @@ type SignupValues = z.infer<typeof signupSchema>
 export default function SignupPage() {
   const t = useTranslations('auth')
   const tValidation = useTranslations('validation')
+  const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+
+  const nextParam = searchParams.get('next')
+  const safeNext =
+    nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : '/dashboard'
 
   const {
     register,
@@ -48,7 +54,7 @@ export default function SignupPage() {
       email: data.email,
       password: data.password,
       options: {
-        emailRedirectTo: `${window.location.origin}/callback`,
+        emailRedirectTo: `${window.location.origin}/callback?next=${encodeURIComponent(safeNext)}`,
       },
     })
 
@@ -66,7 +72,7 @@ export default function SignupPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/callback`,
+        redirectTo: `${window.location.origin}/callback?next=${encodeURIComponent(safeNext)}`,
       },
     })
 
@@ -84,7 +90,9 @@ export default function SignupPage() {
         </CardHeader>
         <CardFooter className="justify-center">
           <Link
-            href="/login"
+            href={
+              safeNext !== '/dashboard' ? `/login?next=${encodeURIComponent(safeNext)}` : '/login'
+            }
             className="text-sm text-foreground underline-offset-4 hover:underline"
           >
             {t('backToLogin')}
@@ -152,7 +160,12 @@ export default function SignupPage() {
       <CardFooter className="justify-center">
         <p className="text-sm text-muted-foreground">
           {t('hasAccount')}{' '}
-          <Link href="/login" className="text-foreground underline-offset-4 hover:underline">
+          <Link
+            href={
+              safeNext !== '/dashboard' ? `/login?next=${encodeURIComponent(safeNext)}` : '/login'
+            }
+            className="text-foreground underline-offset-4 hover:underline"
+          >
             {t('loginLink')}
           </Link>
         </p>
