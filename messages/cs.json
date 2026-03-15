@@ -42,6 +42,14 @@
     "updatePasswordSuccessTitle": "Heslo změněno",
     "updatePasswordSuccessDescription": "Vaše heslo bylo úspěšně změněno. Budete přesměrováni."
   },
+  "dashboard": {
+    "navigation": "Navigace",
+    "dashboard": "Přehled",
+    "settings": "Nastavení",
+    "billing": "Fakturace",
+    "logout": "Odhlásit se",
+    "welcome": "Vítejte"
+  },
   "validation": {
     "emailInvalid": "Zadejte platný e-mail",
     "passwordRequired": "Heslo je povinné",
