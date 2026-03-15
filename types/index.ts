@@ -9,3 +9,23 @@ export type Database = {
     CompositeTypes: Record<string, never>
   }
 }
+
+export type UserProfile = {
+  id: string
+  email: string
+  full_name: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type Subscription = {
+  id: string
+  user_id: string
+  stripe_customer_id: string
+  stripe_subscription_id: string | null
+  status: string
+  plan_id: string | null
+  current_period_end: string | null
+  created_at: string
+  updated_at: string
+}
