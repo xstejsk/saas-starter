@@ -42,6 +42,14 @@
     "updatePasswordSuccessTitle": "Password updated",
     "updatePasswordSuccessDescription": "Your password has been updated. You will be redirected."
   },
+  "dashboard": {
+    "navigation": "Navigation",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "billing": "Billing",
+    "logout": "Log out",
+    "welcome": "Welcome"
+  },
   "validation": {
     "emailInvalid": "Please enter a valid email",
     "passwordRequired": "Password is required",
