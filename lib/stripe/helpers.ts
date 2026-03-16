@@ -1,5 +1,6 @@
 import { stripe } from './client'
 import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import type { Subscription } from '@/types'
 
 async function getOrCreateStripeCustomer(userId: string, email: string): Promise<string> {
@@ -23,8 +24,11 @@ async function getOrCreateStripeCustomer(userId: string, email: string): Promise
     metadata: { supabase_user_id: userId },
   })
 
-  // Store the customer ID in the subscriptions table
-  await (supabase.from('subscriptions' as string) as ReturnType<typeof supabase.from>).upsert(
+  // Store the customer ID — use service client to bypass RLS (only SELECT is allowed for users)
+  const serviceClient = createServiceClient()
+  await (
+    serviceClient.from('subscriptions' as string) as ReturnType<typeof serviceClient.from>
+  ).upsert(
     {
       user_id: userId,
       stripe_customer_id: customer.id,
@@ -81,6 +85,22 @@ export async function createBillingPortalSession(
   })
 
   return session.url
+}
+
+export async function getCurrentPlanId(): Promise<string | null> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) return null
+
+  const subscription = await getSubscriptionByUserId(user.id)
+  if (subscription?.status === 'active') {
+    return subscription.plan_id
+  }
+
+  return null
 }
 
 export async function getSubscriptionByUserId(userId: string): Promise<Subscription | null> {
