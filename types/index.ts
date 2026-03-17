@@ -14,6 +14,7 @@ export type UserProfile = {
   id: string
   email: string
   full_name: string | null
+  locale: string
   created_at: string
   updated_at: string
 }
