@@ -15,5 +15,11 @@ export default async function SettingsPage() {
 
   const profile = await getUserProfileById(user.id)
 
-  return <SettingsForm email={user.email ?? ''} fullName={profile?.full_name ?? ''} />
+  return (
+    <SettingsForm
+      email={user.email ?? ''}
+      fullName={profile?.full_name ?? ''}
+      locale={profile?.locale ?? 'cs'}
+    />
+  )
 }
