@@ -48,7 +48,82 @@
     "settings": "Nastavení",
     "billing": "Fakturace",
     "logout": "Odhlásit se",
-    "welcome": "Vítejte"
+    "welcome": "Vítejte",
+    "pricing": "Ceník",
+    "billingTitle": "Fakturace",
+    "plan": "Plán",
+    "status": "Stav",
+    "renewalDate": "Datum obnovení",
+    "active": "Aktivní",
+    "past_due": "Po splatnosti",
+    "canceled": "Zrušeno",
+    "incomplete": "Neúplné",
+    "manageBilling": "Správa fakturace",
+    "upgrade": "Upgradovat",
+    "freePlanDescription": "Aktuálně používáte plán Free.",
+    "noBillingAccount": "Nebyl nalezen fakturační účet.",
+    "settingsTitle": "Nastavení účtu",
+    "fullNameLabel": "Celé jméno",
+    "fullNamePlaceholder": "Vaše celé jméno",
+    "emailLabel": "E-mail",
+    "saveButton": "Uložit",
+    "saving": "Ukládání...",
+    "profileUpdated": "Profil byl úspěšně aktualizován.",
+    "plans": {
+      "free": "Free",
+      "pro": "Pro",
+      "enterprise": "Enterprise"
+    }
+  },
+  "marketing": {
+    "brand": "ACME",
+    "nav": { "pricing": "Ceník", "login": "Přihlásit se", "signup": "Začít", "dashboard": "Přehled", "logout": "Odhlásit se" },
+    "hero": {
+      "title": "SaaS starter, který prostě funguje",
+      "description": "Vše co potřebujete pro spuštění SaaS aplikace. Autentizace, platby, databáze — vše připravené.",
+      "cta": "Zobrazit ceník"
+    },
+    "features": {
+      "title": "Vše co potřebujete",
+      "setup": { "title": "Rychlé nastavení", "description": "Spusťte svůj projekt během minut, ne dní." },
+      "secure": { "title": "Bezpečné od základu", "description": "Autentizace, RLS a zabezpečení připravené od začátku." },
+      "scale": { "title": "Škálujte s přehledem", "description": "Postaveno na Supabase a Stripe — roste s vámi." }
+    },
+    "cta": {
+      "title": "Připraveni začít?",
+      "description": "Vyberte si plán a spusťte svůj projekt ještě dnes.",
+      "button": "Zobrazit ceník"
+    },
+    "pricing": {
+      "title": "Ceník",
+      "description": "Vyberte si plán, který vám vyhovuje.",
+      "free": "Zdarma",
+      "perMonth": "/měsíc",
+      "getStarted": "Začít",
+      "popular": "Oblíbený",
+      "currentPlan": "Aktuální plán",
+      "checkoutSuccess": "Platba proběhla úspěšně! Vaše předplatné je nyní aktivní.",
+      "checkoutCanceled": "Platba byla zrušena. Nebyli jste ničím zatíženi.",
+      "checkoutError": "Něco se pokazilo. Zkuste to prosím znovu.",
+      "plans": {
+        "free": {
+          "name": "Free",
+          "description": "Začněte se základy",
+          "features": ["1 projekt", "Základní podpora", "Přístup ke komunitě"]
+        },
+        "pro": {
+          "name": "Pro",
+          "description": "Pro profesionály a rostoucí týmy",
+          "features": ["Neomezené projekty", "Prioritní podpora", "Pokročilé analytiky", "Vlastní integrace"]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "description": "Pro velké organizace",
+          "features": ["Vše z Pro", "Dedikovaná podpora", "Garance SLA", "Vlastní smlouvy", "SSO & SAML"]
+        }
+      }
+    },
+    "footer": { "copyright": "© 2026 ACME. Všechna práva vyhrazena." }
   },
   "validation": {
     "emailInvalid": "Zadejte platný e-mail",

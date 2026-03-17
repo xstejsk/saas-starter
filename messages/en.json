@@ -48,7 +48,82 @@
     "settings": "Settings",
     "billing": "Billing",
     "logout": "Log out",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "pricing": "Pricing",
+    "billingTitle": "Billing",
+    "plan": "Plan",
+    "status": "Status",
+    "renewalDate": "Renewal Date",
+    "active": "Active",
+    "past_due": "Past Due",
+    "canceled": "Canceled",
+    "incomplete": "Incomplete",
+    "manageBilling": "Manage Billing",
+    "upgrade": "Upgrade",
+    "freePlanDescription": "You are currently on the Free plan.",
+    "noBillingAccount": "No billing account found.",
+    "settingsTitle": "Account Settings",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Your full name",
+    "emailLabel": "Email",
+    "saveButton": "Save",
+    "saving": "Saving...",
+    "profileUpdated": "Profile updated successfully.",
+    "plans": {
+      "free": "Free",
+      "pro": "Pro",
+      "enterprise": "Enterprise"
+    }
+  },
+  "marketing": {
+    "brand": "ACME",
+    "nav": { "pricing": "Pricing", "login": "Log in", "signup": "Get Started", "dashboard": "Dashboard", "logout": "Log out" },
+    "hero": {
+      "title": "The SaaS starter that just works",
+      "description": "Everything you need to launch your SaaS app. Authentication, payments, database — all ready to go.",
+      "cta": "View Pricing"
+    },
+    "features": {
+      "title": "Everything you need",
+      "setup": { "title": "Quick Setup", "description": "Get your project running in minutes, not days." },
+      "secure": { "title": "Secure by Default", "description": "Authentication, RLS, and security built in from day one." },
+      "scale": { "title": "Scale with Ease", "description": "Built on Supabase and Stripe — grows with you." }
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "description": "Pick a plan and launch your project today.",
+      "button": "View Pricing"
+    },
+    "pricing": {
+      "title": "Pricing",
+      "description": "Choose the plan that fits your needs.",
+      "free": "Free",
+      "perMonth": "/month",
+      "getStarted": "Get Started",
+      "popular": "Popular",
+      "currentPlan": "Current Plan",
+      "checkoutSuccess": "Payment successful! Your subscription is now active.",
+      "checkoutCanceled": "Checkout was canceled. No charges were made.",
+      "checkoutError": "Something went wrong. Please try again.",
+      "plans": {
+        "free": {
+          "name": "Free",
+          "description": "Get started with the basics",
+          "features": ["1 project", "Basic support", "Community access"]
+        },
+        "pro": {
+          "name": "Pro",
+          "description": "For professionals and growing teams",
+          "features": ["Unlimited projects", "Priority support", "Advanced analytics", "Custom integrations"]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "description": "For large organizations",
+          "features": ["Everything in Pro", "Dedicated support", "SLA guarantee", "Custom contracts", "SSO & SAML"]
+        }
+      }
+    },
+    "footer": { "copyright": "© 2026 ACME. All rights reserved." }
   },
   "validation": {
     "emailInvalid": "Please enter a valid email",
