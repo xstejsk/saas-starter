@@ -49,7 +49,31 @@
     "billing": "Billing",
     "logout": "Log out",
     "welcome": "Welcome",
-    "pricing": "Pricing"
+    "pricing": "Pricing",
+    "billingTitle": "Billing",
+    "plan": "Plan",
+    "status": "Status",
+    "renewalDate": "Renewal Date",
+    "active": "Active",
+    "past_due": "Past Due",
+    "canceled": "Canceled",
+    "incomplete": "Incomplete",
+    "manageBilling": "Manage Billing",
+    "upgrade": "Upgrade",
+    "freePlanDescription": "You are currently on the Free plan.",
+    "noBillingAccount": "No billing account found.",
+    "settingsTitle": "Account Settings",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Your full name",
+    "emailLabel": "Email",
+    "saveButton": "Save",
+    "saving": "Saving...",
+    "profileUpdated": "Profile updated successfully.",
+    "plans": {
+      "free": "Free",
+      "pro": "Pro",
+      "enterprise": "Enterprise"
+    }
   },
   "marketing": {
     "brand": "ACME",
@@ -80,6 +104,7 @@
       "currentPlan": "Current Plan",
       "checkoutSuccess": "Payment successful! Your subscription is now active.",
       "checkoutCanceled": "Checkout was canceled. No charges were made.",
+      "checkoutError": "Something went wrong. Please try again.",
       "plans": {
         "free": {
           "name": "Free",

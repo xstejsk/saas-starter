@@ -95,9 +95,15 @@ export async function getCurrentPlanId(): Promise<string | null> {
 
   if (!user) return null
 
-  const subscription = await getSubscriptionByUserId(user.id)
-  if (subscription?.status === 'active') {
-    return subscription.plan_id
+  // Query directly to reuse the same supabase client instead of creating another via getSubscriptionByUserId
+  const { data } = (await supabase
+    .from('subscriptions' as string)
+    .select('*')
+    .eq('user_id', user.id)
+    .single()) as { data: Subscription | null }
+
+  if (data?.status === 'active') {
+    return data.plan_id
   }
 
   return null

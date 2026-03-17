@@ -43,7 +43,15 @@ function NavLinks({
   )
 }
 
-export function DashboardSidebar({ userEmail }: { userEmail: string }) {
+export function DashboardSidebar({
+  userEmail,
+  userName,
+  planId,
+}: {
+  userEmail: string
+  userName: string | null
+  planId: string | null
+}) {
   const pathname = usePathname()
   const t = useTranslations('dashboard')
   const [open, setOpen] = useState(false)
@@ -58,7 +66,11 @@ export function DashboardSidebar({ userEmail }: { userEmail: string }) {
       </div>
       <div className="space-y-3">
         <Separator />
-        <p className="truncate px-2 text-sm text-muted-foreground">{userEmail}</p>
+        <div className="px-2">
+          {userName && <p className="truncate text-sm font-medium">{userName}</p>}
+          <p className="truncate text-xs text-muted-foreground">{userEmail}</p>
+          {planId && <p className="mt-1 text-xs text-muted-foreground">{t(`plans.${planId}`)}</p>}
+        </div>
         <form action="/api/auth/signout" method="POST">
           <Button variant="ghost" type="submit" className="w-full justify-start">
             <HugeiconsIcon icon={Logout01Icon} size={18} strokeWidth={2} />

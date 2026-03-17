@@ -77,7 +77,8 @@ function handleSubscriptionDeleted(subscription: Stripe.Subscription): Promise<v
 }
 
 function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
-  const customerId = resolveCustomerId(invoice.customer!)
+  if (!invoice.customer) return Promise.resolve()
+  const customerId = resolveCustomerId(invoice.customer)
 
   return upsertSubscription(customerId, null, {
     status: 'active',
@@ -85,7 +86,8 @@ function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
 }
 
 function handleInvoicePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
-  const customerId = resolveCustomerId(invoice.customer!)
+  if (!invoice.customer) return Promise.resolve()
+  const customerId = resolveCustomerId(invoice.customer)
 
   return upsertSubscription(customerId, null, {
     status: 'past_due',

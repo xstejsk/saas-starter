@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useAction } from 'next-safe-action/hooks'
+import { toast } from 'sonner'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -27,15 +28,20 @@ export function PricingCard({ plan, currentPlanId }: { plan: Plan; currentPlanId
         window.location.href = data.url
       }
     },
-    onError: () => {
-      router.push('/signup?next=/pricing')
+    onError: ({ error }) => {
+      if (error.serverError === 'Unauthorized') {
+        router.push('/signup?next=/pricing')
+      } else {
+        toast.error(t('checkoutError'))
+      }
     },
   })
 
   const isPopular = plan.id === 'pro'
   const isCurrent = plan.id === currentPlanId
 
-  const formattedPrice = plan.price === 0 ? t('free') : `$${plan.price}${t('perMonth')}`
+  const formattedPrice =
+    plan.price === 0 ? t('free') : `$${(plan.price / 100).toFixed(2)}${t('perMonth')}`
 
   const features = t.raw(`plans.${plan.id}.features`) as string[]
 
@@ -73,9 +79,13 @@ export function PricingCard({ plan, currentPlanId }: { plan: Plan; currentPlanId
         <Button
           className="w-full"
           variant={isCurrent ? 'secondary' : isPopular ? 'default' : 'outline'}
-          onClick={() =>
+          onClick={() => {
+            if (plan.price === 0) {
+              router.push('/signup')
+              return
+            }
             execute({ priceId: plan.stripePriceId, returnUrl: window.location.origin + '/pricing' })
-          }
+          }}
           disabled={isPending || isCurrent}
         >
           {isCurrent ? t('currentPlan') : isPending ? t('getStarted') + '...' : t('getStarted')}

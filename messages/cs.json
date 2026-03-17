@@ -49,7 +49,31 @@
     "billing": "Fakturace",
     "logout": "Odhlásit se",
     "welcome": "Vítejte",
-    "pricing": "Ceník"
+    "pricing": "Ceník",
+    "billingTitle": "Fakturace",
+    "plan": "Plán",
+    "status": "Stav",
+    "renewalDate": "Datum obnovení",
+    "active": "Aktivní",
+    "past_due": "Po splatnosti",
+    "canceled": "Zrušeno",
+    "incomplete": "Neúplné",
+    "manageBilling": "Správa fakturace",
+    "upgrade": "Upgradovat",
+    "freePlanDescription": "Aktuálně používáte plán Free.",
+    "noBillingAccount": "Nebyl nalezen fakturační účet.",
+    "settingsTitle": "Nastavení účtu",
+    "fullNameLabel": "Celé jméno",
+    "fullNamePlaceholder": "Vaše celé jméno",
+    "emailLabel": "E-mail",
+    "saveButton": "Uložit",
+    "saving": "Ukládání...",
+    "profileUpdated": "Profil byl úspěšně aktualizován.",
+    "plans": {
+      "free": "Free",
+      "pro": "Pro",
+      "enterprise": "Enterprise"
+    }
   },
   "marketing": {
     "brand": "ACME",
@@ -80,6 +104,7 @@
       "currentPlan": "Aktuální plán",
       "checkoutSuccess": "Platba proběhla úspěšně! Vaše předplatné je nyní aktivní.",
       "checkoutCanceled": "Platba byla zrušena. Nebyli jste ničím zatíženi.",
+      "checkoutError": "Něco se pokazilo. Zkuste to prosím znovu.",
       "plans": {
         "free": {
           "name": "Free",
