@@ -66,20 +66,38 @@ Pre-commit hooks (husky + lint-staged) auto-run ESLint fix + Prettier on staged 
 - `(marketing)/`   → public pages: landing, pricing
 
 ### Folder Structure
-- `/app`           — Next.js App Router pages and layouts
+- `/app`           — Next.js App Router pages and layouts (thin — fetch data, pass to components)
 - `/components/ui` — shadcn components (never manually edit these)
-- `/components/shared` — custom reusable components
-- `/lib/supabase`  — server.ts (async, uses cookies), client.ts (browser client), middleware.ts
-- `/lib/stripe`    — client.ts, helpers.ts
+- `/components/shared` — custom reusable components (pure UI, no direct Supabase calls)
+- `/lib/db`        — Database access ONLY, one file per domain (auth.ts, profiles.ts, subscriptions.ts)
+- `/lib/supabase`  — server.ts (async, uses cookies), client.ts (browser client), service.ts, middleware.ts
+- `/lib/stripe`    — client.ts, helpers.ts (Stripe API integration, calls lib/db for DB access)
 - `/lib/resend`    — client.ts, templates/
-- `/actions`       — Server Actions using next-safe-action + Zod
+- `/actions`       — Server Actions using next-safe-action + Zod (business logic, validation, orchestration — calls lib/db)
 - `/types`         — Shared TypeScript types (index.ts — includes Supabase `Database` type)
 - `/messages`      — cs.json, en.json (next-intl translations)
 - `/supabase/migrations` — All DB migrations (NEVER skip this)
 
+### Architecture Pattern (follow strictly)
+
+**Layer responsibilities:**
+- `lib/db/*.ts`        → Database access ONLY. No business logic. One file per domain (auth.ts, profiles.ts, subscriptions.ts).
+- `actions/*.ts`       → Business logic, validation, orchestration. Uses next-safe-action + Zod. Calls lib/db.
+- `app/**/page.tsx`    → Thin. Fetch data via lib/db, pass to components. No business logic.
+- `components/**`      → Pure UI. No direct Supabase calls ever.
+- `types/index.ts`     → All shared TypeScript types/interfaces.
+
+**Rules:**
+- Pages and components NEVER import from `@/lib/supabase` directly — use `lib/db/` instead
+- All mutations go through `actions/`
+- All queries from pages go through `lib/db/`
+- Business logic lives in `actions/` ONLY
+- Exception: Auth pages (login, signup, etc.) may use `@/lib/supabase/client` for auth flows (not DB queries)
+- Exception: Auth callback route may use `@/lib/supabase/server` for `exchangeCodeForSession`
+
 ### Supabase Client Pattern
-- **Server Components / Server Actions:** `import { createClient } from '@/lib/supabase/server'` — async, cookie-based
-- **Client Components:** `import { createClient } from '@/lib/supabase/client'` — browser client, no cookies
+- **lib/db layer:** `import { createClient } from '@/lib/supabase/server'` — async, cookie-based
+- **Client Components (auth only):** `import { createClient } from '@/lib/supabase/client'` — browser client, no cookies
 - **Middleware** (`middleware.ts`): Inline Supabase client that refreshes auth session on every request. Do not add logic between `createServerClient` and `supabase.auth.getUser()`.
 
 ### CI
@@ -92,7 +110,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs typecheck → lint → build on
 3. Every table: id (uuid), created_at (timestamptz), user_id (uuid FK auth.users)
 4. Use Server Actions for all mutations — NOT API routes unless it's a webhook
 5. Use next-safe-action for all Server Actions (typed + Zod validated)
-6. Supabase server client in Server Components, browser client in Client Components
+6. All DB access goes through `lib/db/` — pages and components never import from `@/lib/supabase` directly
 7. All user-facing strings go in /messages/cs.json and /messages/en.json
 8. Never use 'any' in TypeScript
 9. Never hardcode URLs, keys, or environment-specific values

@@ -4,6 +4,12 @@ export type Plan = {
   stripePriceId: string
 }
 
+/**
+ * Routes that require an active subscription (status = 'active').
+ * Authenticated users without a subscription are redirected to /dashboard/billing.
+ */
+export const PROTECTED_ROUTES = ['/dashboard/app']
+
 export const PLANS: Plan[] = [
   {
     id: 'free',

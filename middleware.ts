@@ -1,7 +1,9 @@
 import { createServerClient } from '@supabase/ssr'
 import type { CookieOptions } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { NextResponse, type NextRequest } from 'next/server'
 import type { Database } from '@/types'
+import { PROTECTED_ROUTES } from '@/lib/stripe/config'
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -65,6 +67,39 @@ export async function middleware(request: NextRequest) {
       redirectResponse.cookies.set(cookie.name, cookie.value)
     })
     return redirectResponse
+  }
+
+  // Subscription-gated routes: require active subscription
+  if (user) {
+    const requiresSubscription = PROTECTED_ROUTES.some(
+      (r) => pathname === r || pathname.startsWith(r + '/'),
+    )
+
+    if (requiresSubscription) {
+      const serviceClient = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      )
+
+      const { data: subscription } = await serviceClient
+        .from('subscriptions')
+        .select('status')
+        .eq('user_id', user.id)
+        .single()
+
+      const status = subscription?.status as string | undefined
+      if (status !== 'active') {
+        const url = request.nextUrl.clone()
+        url.pathname = '/dashboard/billing'
+        url.search = ''
+        url.searchParams.set('reason', 'subscription_required')
+        const redirectResponse = NextResponse.redirect(url)
+        supabaseResponse.cookies.getAll().forEach((cookie) => {
+          redirectResponse.cookies.set(cookie.name, cookie.value)
+        })
+        return redirectResponse
+      }
+    }
   }
 
   return supabaseResponse

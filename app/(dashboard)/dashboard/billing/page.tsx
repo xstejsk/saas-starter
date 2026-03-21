@@ -1,19 +1,20 @@
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
-import { createClient } from '@/lib/supabase/server'
-import { getSubscriptionByUserId } from '@/lib/stripe/helpers'
+import { getAuthUser } from '@/lib/db/auth'
+import { getSubscriptionByUserId } from '@/lib/db/subscriptions'
 import { PLANS } from '@/lib/stripe/config'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ManageBillingButton } from '@/components/shared/manage-billing-button'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
-export default async function BillingPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default async function BillingPage(props: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
+  const searchParams = await props.searchParams
+  const user = await getAuthUser()
 
   if (!user) {
     redirect('/login?next=/dashboard/billing')
@@ -23,6 +24,8 @@ export default async function BillingPage() {
   const t = await getTranslations('dashboard')
   const tPricing = await getTranslations('marketing.pricing')
 
+  const showSubscriptionBanner = searchParams.reason === 'subscription_required'
+
   const hasActiveSubscription =
     subscription && subscription.status !== 'incomplete' && subscription.plan_id
 
@@ -30,6 +33,11 @@ export default async function BillingPage() {
     return (
       <div className="space-y-6">
         <h1 className="text-2xl font-semibold">{t('billingTitle')}</h1>
+        {showSubscriptionBanner && (
+          <Alert variant="destructive">
+            <AlertDescription>{t('subscriptionRequired')}</AlertDescription>
+          </Alert>
+        )}
         <Card>
           <CardHeader>
             <CardTitle>
@@ -59,6 +67,11 @@ export default async function BillingPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">{t('billingTitle')}</h1>
+      {showSubscriptionBanner && (
+        <Alert variant="destructive">
+          <AlertDescription>{t('subscriptionRequired')}</AlertDescription>
+        </Alert>
+      )}
       <Card>
         <CardHeader>
           <CardTitle>

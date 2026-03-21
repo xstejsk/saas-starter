@@ -2,11 +2,8 @@
 
 import { z } from 'zod'
 import { authActionClient } from '@/lib/safe-action'
-import {
-  createCheckoutSession,
-  createBillingPortalSession,
-  getSubscriptionByUserId,
-} from '@/lib/stripe/helpers'
+import { getSubscriptionByUserId } from '@/lib/db/subscriptions'
+import { createCheckoutSession, createBillingPortalSession } from '@/lib/stripe/helpers'
 
 const createCheckoutSchema = z.object({
   priceId: z.string().min(1),

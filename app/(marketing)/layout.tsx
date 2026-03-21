@@ -1,13 +1,10 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { createClient } from '@/lib/supabase/server'
+import { getAuthUser } from '@/lib/db/auth'
 import { Button } from '@/components/ui/button'
 
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getAuthUser()
 
   return (
     <div className="flex min-h-svh flex-col">

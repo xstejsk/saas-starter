@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { getUserProfileById } from '@/lib/supabase/helpers'
+import { getUserProfileById } from '@/lib/db/profiles'
 import { LOCALE_COOKIE, isSupportedLocale, DEFAULT_LOCALE } from '@/lib/i18n'
 
 export async function GET(request: Request) {
