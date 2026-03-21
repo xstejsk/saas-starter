@@ -1,21 +1,16 @@
 import { getStripe } from './client'
-import { createClient } from '@/lib/supabase/server'
-import { createServiceClient } from '@/lib/supabase/service'
-import type { Subscription } from '@/types'
+import { getAuthUser } from '@/lib/db/auth'
+import {
+  getSubscriptionByUserId,
+  getSubscriptionCustomerId,
+  upsertSubscriptionAsService,
+} from '@/lib/db/subscriptions'
 
 async function getOrCreateStripeCustomer(userId: string, email: string): Promise<string> {
-  const supabase = await createClient()
+  const existingCustomerId = await getSubscriptionCustomerId(userId)
 
-  // Check if user already has a Stripe customer ID
-  // TODO: Remove type assertions once Supabase Database types are generated
-  const { data: subscription } = (await supabase
-    .from('subscriptions' as string)
-    .select('stripe_customer_id')
-    .eq('user_id', userId)
-    .single()) as { data: { stripe_customer_id: string } | null }
-
-  if (subscription?.stripe_customer_id) {
-    return subscription.stripe_customer_id
+  if (existingCustomerId) {
+    return existingCustomerId
   }
 
   // Create a new Stripe customer
@@ -25,17 +20,10 @@ async function getOrCreateStripeCustomer(userId: string, email: string): Promise
   })
 
   // Store the customer ID — use service client to bypass RLS (only SELECT is allowed for users)
-  const serviceClient = createServiceClient()
-  await (
-    serviceClient.from('subscriptions' as string) as ReturnType<typeof serviceClient.from>
-  ).upsert(
-    {
-      user_id: userId,
-      stripe_customer_id: customer.id,
-      status: 'incomplete',
-    } as Record<string, unknown>,
-    { onConflict: 'user_id' },
-  )
+  await upsertSubscriptionAsService(userId, {
+    stripe_customer_id: customer.id,
+    status: 'incomplete',
+  })
 
   return customer.id
 }
@@ -45,11 +33,7 @@ export async function createCheckoutSession(
   priceId: string,
   returnUrl: string,
 ): Promise<string> {
-  const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getAuthUser()
 
   if (!user || user.id !== userId) {
     throw new Error('Unauthorized')
@@ -88,40 +72,14 @@ export async function createBillingPortalSession(
 }
 
 export async function getCurrentPlanId(): Promise<string | null> {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+  const user = await getAuthUser()
   if (!user) return null
 
-  // Query directly to reuse the same supabase client instead of creating another via getSubscriptionByUserId
-  const { data } = (await supabase
-    .from('subscriptions' as string)
-    .select('*')
-    .eq('user_id', user.id)
-    .single()) as { data: Subscription | null }
+  const subscription = await getSubscriptionByUserId(user.id)
 
-  if (data?.status === 'active') {
-    return data.plan_id
+  if (subscription?.status === 'active') {
+    return subscription.plan_id
   }
 
   return null
-}
-
-export async function getSubscriptionByUserId(userId: string): Promise<Subscription | null> {
-  const supabase = await createClient()
-
-  // TODO: Remove type assertion once Supabase Database types are generated
-  const { data, error } = (await supabase
-    .from('subscriptions' as string)
-    .select('*')
-    .eq('user_id', userId)
-    .single()) as { data: Subscription | null; error: { message: string } | null }
-
-  if (error || !data) {
-    return null
-  }
-
-  return data
 }

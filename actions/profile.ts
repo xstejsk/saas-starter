@@ -3,8 +3,9 @@
 import { cookies } from 'next/headers'
 import { z } from 'zod'
 import { authActionClient } from '@/lib/safe-action'
-import { createClient } from '@/lib/supabase/server'
-import { getUserProfileById } from '@/lib/supabase/helpers'
+import { updateUserProfile } from '@/lib/db/profiles'
+import { getUserProfileById } from '@/lib/db/profiles'
+import { getAuthUser } from '@/lib/db/auth'
 import { SUPPORTED_LOCALES, LOCALE_COOKIE, isSupportedLocale, DEFAULT_LOCALE } from '@/lib/i18n'
 
 const updateProfileSchema = z.object({
@@ -15,17 +16,7 @@ const updateProfileSchema = z.object({
 export const updateProfile = authActionClient
   .inputSchema(updateProfileSchema)
   .action(async ({ parsedInput: { fullName, locale }, ctx: { user } }) => {
-    const supabase = await createClient()
-
-    const { error } = (await (
-      supabase.from('user_profiles' as string) as ReturnType<typeof supabase.from>
-    )
-      .update({ full_name: fullName, locale } as Record<string, unknown>)
-      .eq('id', user.id)) as { error: { message: string } | null }
-
-    if (error) {
-      throw new Error(error.message)
-    }
+    await updateUserProfile(user.id, { full_name: fullName, locale })
 
     const cookieStore = await cookies()
     cookieStore.set(LOCALE_COOKIE, locale, {
@@ -38,11 +29,7 @@ export const updateProfile = authActionClient
   })
 
 export async function syncLocaleCookie(): Promise<void> {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+  const user = await getAuthUser()
   if (!user) return
 
   const profile = await getUserProfileById(user.id)
