@@ -62,6 +62,7 @@
     "upgrade": "Upgradovat",
     "freePlanDescription": "Aktuálně používáte plán Free.",
     "noBillingAccount": "Nebyl nalezen fakturační účet.",
+    "subscriptionRequired": "Pro přístup k této funkci je vyžadováno aktivní předplatné. Upgradujte svůj plán.",
     "settingsTitle": "Nastavení účtu",
     "fullNameLabel": "Celé jméno",
     "fullNamePlaceholder": "Vaše celé jméno",

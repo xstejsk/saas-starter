@@ -62,6 +62,7 @@
     "upgrade": "Upgrade",
     "freePlanDescription": "You are currently on the Free plan.",
     "noBillingAccount": "No billing account found.",
+    "subscriptionRequired": "An active subscription is required to access this feature. Please upgrade your plan.",
     "settingsTitle": "Account Settings",
     "fullNameLabel": "Full Name",
     "fullNamePlaceholder": "Your full name",
